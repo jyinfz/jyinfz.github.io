@@ -1,0 +1,37 @@
+<!doctype>
+<html>
+<head>
+	<title>node.js聊天客户端</title>
+</head>
+<body>
+	<h1>我的聊天室</h1>
+	<textarea name="" id="text" cols="30" rows="10"></textarea>
+	<button id="btn">发送</button>你哦阿红
+	<script type="text/javascript" src="http://wulv5.com/js/socket.io.min.js">
+	</script>
+	<script type="text/javascript">
+		
+		var socket = io.connect("/");//连接聊天室io服务器的根地址0
+		var otext = document.getElementById("text"),
+		    obtn = document.getElementById("btn");
+
+		obtn.onclick = function(){
+			var mes = otext.value;
+			if(!mes)
+			{
+				return;
+			}
+			socket.send(mes);//如果文本框内有内容 那么就发送信息给服务器
+			otext.value = "";//发送完消息之后 清空输入框
+		}
+
+		socket.on("message",function(mes){
+			var div = document.createElement("div");
+			div.className = "mes";
+			div.innerText = mes;
+			document.body.appendChild(div);
+
+		})
+	</script>
+</body>
+</html>
